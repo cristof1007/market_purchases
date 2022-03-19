@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Login;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -15,9 +15,9 @@ class VerifyToken
      */
     public function handle(Request $request, Closure $next)
     {
-        $registerLogin = Login::where('status', 1)
-        ->where('id_user', $request->header('id'))
-        ->where('token', $request->header('token'))
+        $registerLogin = User::where('active', 1)
+        ->where('id', $request->header('id'))
+        ->where('remember_token', $request->header('token'))
         ->first();
 
         // if ($registerLogin == null) {
