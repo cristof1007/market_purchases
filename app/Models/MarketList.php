@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property int|null $fk_family
+ * @property int|null $fk_purchase
  * @property Carbon|null $date_buy
  * @property bool|null $active
  * @property string|null $user
@@ -22,8 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property Catalogue|null $catalogue
+ * @property Purchase|null $purchase
  * @property Collection|MarketListDetail[] $market_list_details
- * @property Collection|Purchase[] $purchases
  *
  * @package App\Models
  */
@@ -33,6 +34,7 @@ class MarketList extends Model
 
 	protected $casts = [
 		'fk_family' => 'int',
+		'fk_purchase' => 'int',
 		'active' => 'bool'
 	];
 
@@ -42,6 +44,7 @@ class MarketList extends Model
 
 	protected $fillable = [
 		'fk_family',
+		'fk_purchase',
 		'date_buy',
 		'active',
 		'user'
@@ -52,13 +55,13 @@ class MarketList extends Model
 		return $this->belongsTo(Catalogue::class, 'fk_family');
 	}
 
+	public function purchase()
+	{
+		return $this->belongsTo(Purchase::class, 'fk_purchase');
+	}
+
 	public function market_list_details()
 	{
 		return $this->hasMany(MarketListDetail::class, 'fk_market_list');
-	}
-
-	public function purchases()
-	{
-		return $this->hasMany(Purchase::class, 'fk_market_list');
 	}
 }

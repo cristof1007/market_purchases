@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
  * Class Purchase
  * 
  * @property int $id
- * @property int|null $fk_market_list
  * @property int|null $fk_family
  * @property int|null $fk_place
  * @property int|null $fk_money_place
@@ -26,9 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property Catalogue|null $catalogue
- * @property MarketList|null $market_list
  * @property MoneyBag|null $money_bag
  * @property MoneyPlace|null $money_place
+ * @property Collection|MarketList[] $market_lists
  * @property Collection|PurchaseDetail[] $purchase_details
  *
  * @package App\Models
@@ -38,7 +37,6 @@ class Purchase extends Model
 	protected $table = 'purchases';
 
 	protected $casts = [
-		'fk_market_list' => 'int',
 		'fk_family' => 'int',
 		'fk_place' => 'int',
 		'fk_money_place' => 'int',
@@ -51,7 +49,6 @@ class Purchase extends Model
 	];
 
 	protected $fillable = [
-		'fk_market_list',
 		'fk_family',
 		'fk_place',
 		'fk_money_place',
@@ -66,11 +63,6 @@ class Purchase extends Model
 		return $this->belongsTo(Catalogue::class, 'fk_place');
 	}
 
-	public function market_list()
-	{
-		return $this->belongsTo(MarketList::class, 'fk_market_list');
-	}
-
 	public function money_bag()
 	{
 		return $this->belongsTo(MoneyBag::class, 'fk_money_bag');
@@ -79,6 +71,11 @@ class Purchase extends Model
 	public function money_place()
 	{
 		return $this->belongsTo(MoneyPlace::class, 'fk_money_place');
+	}
+
+	public function market_lists()
+	{
+		return $this->hasMany(MarketList::class, 'fk_purchase');
 	}
 
 	public function purchase_details()

@@ -20,7 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $observation
  * @property Carbon|null $start
  * @property Carbon|null $end
- * @property bool|null $is_active
+ * @property bool|null $is_finished
+ * @property bool|null $active
+ * @property string|null $user
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * 
  * @property Catalogue|null $catalogue
  * @property Collection|PurchaseDetail[] $purchase_details
@@ -31,12 +35,12 @@ use Illuminate\Database\Eloquent\Model;
 class MoneyBag extends Model
 {
 	protected $table = 'money_bags';
-	public $timestamps = false;
 
 	protected $casts = [
 		'fk_type' => 'int',
 		'max_amount' => 'float',
-		'is_active' => 'bool'
+		'is_finished' => 'bool',
+		'active' => 'bool'
 	];
 
 	protected $dates = [
@@ -51,7 +55,9 @@ class MoneyBag extends Model
 		'observation',
 		'start',
 		'end',
-		'is_active'
+		'is_finished',
+		'active',
+		'user'
 	];
 
 	public function catalogue()
