@@ -20,9 +20,9 @@ class VerifyToken
         ->where('remember_token', $request->header('token'))
         ->first();
 
-        // if ($registerLogin == null) {
-        //     abort(403, 'Access denied');
-        // }
+        if ($registerLogin == null) {
+            abort(403, 'Access denied');
+        }
 
         return $next($request);
     }
