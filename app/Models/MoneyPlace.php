@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Catalogue|null $catalogue
  * @property Collection|MoneyMovement[] $money_movements
+ * @property Collection|PurchaseDetail[] $purchase_details
  * @property Collection|Purchase[] $purchases
  *
  * @package App\Models
@@ -62,8 +63,13 @@ class MoneyPlace extends Model
 		return $this->hasMany(MoneyMovement::class, 'fk_money_place');
 	}
 
+	public function purchase_details()
+	{
+		return $this->hasMany(PurchaseDetail::class, 'fk_money_place');
+	}
+
 	public function purchases()
 	{
-		return $this->hasMany(Purchase::class, 'fk_place');
+		return $this->hasMany(Purchase::class, 'fk_money_place');
 	}
 }

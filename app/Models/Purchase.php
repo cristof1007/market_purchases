@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $fk_family
  * @property int|null $fk_place
  * @property int|null $fk_money_place
+ * @property int|null $fk_money_bag
  * @property Carbon|null $date
  * @property bool|null $active
  * @property string|null $user
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property Catalogue|null $catalogue
  * @property MarketList|null $market_list
+ * @property MoneyBag|null $money_bag
  * @property MoneyPlace|null $money_place
  * @property Collection|PurchaseDetail[] $purchase_details
  *
@@ -40,6 +42,7 @@ class Purchase extends Model
 		'fk_family' => 'int',
 		'fk_place' => 'int',
 		'fk_money_place' => 'int',
+		'fk_money_bag' => 'int',
 		'active' => 'bool'
 	];
 
@@ -52,6 +55,7 @@ class Purchase extends Model
 		'fk_family',
 		'fk_place',
 		'fk_money_place',
+		'fk_money_bag',
 		'date',
 		'active',
 		'user'
@@ -67,9 +71,14 @@ class Purchase extends Model
 		return $this->belongsTo(MarketList::class, 'fk_market_list');
 	}
 
+	public function money_bag()
+	{
+		return $this->belongsTo(MoneyBag::class, 'fk_money_bag');
+	}
+
 	public function money_place()
 	{
-		return $this->belongsTo(MoneyPlace::class, 'fk_place');
+		return $this->belongsTo(MoneyPlace::class, 'fk_money_place');
 	}
 
 	public function purchase_details()
