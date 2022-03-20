@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -45,33 +44,36 @@ class _GenericController extends _Controller
 
 
     public function save(Request $request) {
+
         $obj = $request->all();
-        if($obj == null) {
-            return response()->json(['message' => "the object received is null"], 500);
+
+        if(isset($obj['id']) && $obj['id'] > 0) {
+            return $this->update($obj, $obj['id']);
         }
 
-        // if id is major of 0 them is a update
-        if(isset($obj->id) && $obj->id > 0) {
-            return $this->update($obj);
-        }
         else {
-            return $this->insertNew($obj);
+            $currentApiUser = _Util::getCurrentApiUser($request);
+            if($currentApiUser == null) {
+                return response()->json(['message' => "Operation invalid user is not logged"], 403);
+            }
+
+            return $this->insertNew($obj, $currentApiUser->name);
         }
     }
 
-    public function insertNew($obj) {
+    public function insertNew($obj, $userName) {
         try {
-            $obj->user = Auth::user()->name;;
-            $obj->save();
+            $obj['user'] = $userName;
+            $obj = $this->modelName::create($obj);
             return response()->json($obj, 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    public function update($obj) {
+    public function update($obj, $id) {
         try {
-            $obj->save();
+            $this->modelName::find($id)->update($obj);
             return response()->json($obj, 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
