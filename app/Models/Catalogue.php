@@ -59,7 +59,7 @@ class Catalogue extends Model
 
 	public function money_bags()
 	{
-		return $this->hasMany(MoneyBag::class, 'fk_type');
+		return $this->hasMany(MoneyBag::class, 'fk_family');
 	}
 
 	public function money_movements()

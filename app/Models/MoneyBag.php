@@ -14,9 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * Class MoneyBag
  * 
  * @property int $id
- * @property int|null $fk_type
- * @property float|null $max_amount
+ * @property int|null $fk_family
  * @property string|null $description
+ * @property float|null $max_amount
+ * @property float|null $current_amount
  * @property string|null $observation
  * @property Carbon|null $start
  * @property Carbon|null $end
@@ -37,8 +38,9 @@ class MoneyBag extends Model
 	protected $table = 'money_bags';
 
 	protected $casts = [
-		'fk_type' => 'int',
+		'fk_family' => 'int',
 		'max_amount' => 'float',
+		'current_amount' => 'float',
 		'is_finished' => 'bool',
 		'active' => 'bool'
 	];
@@ -49,9 +51,10 @@ class MoneyBag extends Model
 	];
 
 	protected $fillable = [
-		'fk_type',
-		'max_amount',
+		'fk_family',
 		'description',
+		'max_amount',
+		'current_amount',
 		'observation',
 		'start',
 		'end',
@@ -62,7 +65,7 @@ class MoneyBag extends Model
 
 	public function catalogue()
 	{
-		return $this->belongsTo(Catalogue::class, 'fk_type');
+		return $this->belongsTo(Catalogue::class, 'fk_family');
 	}
 
 	public function purchase_details()
